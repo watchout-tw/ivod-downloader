@@ -4,6 +4,7 @@ var request = require("request");
 var cheerio = require("cheerio");
 var async = require('async');
 var path = require("path");
+var PORT = process.env.PORT || 8080;
 
 var app = express();
 
@@ -71,8 +72,8 @@ app.post('/download', function (req, response) {
   }
 });
 
-app.listen(8080, function() {
-  console.log('server listen on 8080');
+app.listen(PORT, function() {
+  console.log('server listen on', PORT);
 });
 
 
