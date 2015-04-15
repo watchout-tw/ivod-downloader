@@ -35,6 +35,9 @@ app.post('/download', function (req, response) {
         });
       } else {
         response.setHeader('Content-Type', 'application/octet-stream');
+        response.header('Access-Control-Allow-Origin', '*');
+        response.header('Access-Control-Allow-Methods', 'POST');
+        response.header('Access-Control-Allow-Headers', 'Content-Type');
         var $ = cheerio.load(body);
         var committee = $('.video-text h4').text().replace('主辦單位 ：','');
         var title = $('.video-text h4').next().text();
