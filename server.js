@@ -4,14 +4,19 @@ var request = require("request");
 var cheerio = require("cheerio");
 var async = require('async');
 var path = require("path");
+var fs = require("fs");
+var mpegts_to_mp4 = require('mpegts_to_mp4');
 var PORT = process.env.PORT || 8080;
 
 var app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
+
 app.get('/' ,function (req, res) {
   res.sendFile(path.resolve(__dirname + '/index.html'));
 });
+
+app.get('/download', function(req, res){ return res.redirect('/');});
 
 app.post('/download', function (req, response) {
   var link = req.body.link;
@@ -54,11 +59,13 @@ app.post('/download', function (req, response) {
                 }).map(function (it) {
                   return 'http://h264media02.ly.gov.tw:1935' + uri + it;
                 });
-                var concated = ''
+                var ts = fs.createWriteStream('output.ts');
                 async.eachSeries(segments, function(segment, callback) {
                   var req = request(segment);
+                  var filename = req.path.split('/')[5];
+                  console.log(filename);
                   req.on('data', function(it) {
-                    response.write(it);
+                    ts.write(it);
                   });
                   req.on('end', function() {
                     callback() });
@@ -67,8 +74,14 @@ app.post('/download', function (req, response) {
                   });
 
                 }, function () {
+                  ts.end();
                   console.log('downloaded');
-                  response.end();
+                  mpegts_to_mp4("output.ts", "output.mp4", function () {
+                    var readStream = fs.createReadStream("output.mp4");
+                    readStream.pipe(response);
+                    fs.unlink("output.ts");
+                    fs.unlink("output.mp4");
+                  });
                 });
               });
             });
