@@ -5,7 +5,6 @@ var cheerio = require("cheerio");
 var async = require('async');
 var path = require("path");
 var fs = require("fs");
-var mpegts_to_mp4 = require('mpegts_to_mp4');
 var PORT = process.env.PORT || 8080;
 
 var app = express();
@@ -41,7 +40,7 @@ app.post('/download', function (req, response) {
         var title = $('.video-text h4').next().text();
         var legislator = $('.video-text h4').next().next().text().replace('委員名稱：','');
         var duration = $('.video-text h4').next().next().next().text().replace('委員發言時間：','');
-        var filename = (committee + title + legislator + duration).replace(' ', '-') + ".mp4";
+        var filename = (committee + title + legislator + duration).replace(' ', '-') + ".ts";
         response.attachment(filename);
         $('script').each(function(i, e) {
           var content = $(e).text().trim();
@@ -59,13 +58,10 @@ app.post('/download', function (req, response) {
                 }).map(function (it) {
                   return 'http://h264media02.ly.gov.tw:1935' + uri + it;
                 });
-                var ts = fs.createWriteStream('output.ts');
                 async.eachSeries(segments, function(segment, callback) {
                   var req = request(segment);
-                  var filename = req.path.split('/')[5];
-                  console.log(filename);
                   req.on('data', function(it) {
-                    ts.write(it);
+                    response.write(it);
                   });
                   req.on('end', function() {
                     callback() });
@@ -74,14 +70,8 @@ app.post('/download', function (req, response) {
                   });
 
                 }, function () {
-                  ts.end();
                   console.log('downloaded');
-                  mpegts_to_mp4("output.ts", "output.mp4", function () {
-                    var readStream = fs.createReadStream("output.mp4");
-                    readStream.pipe(response);
-                    fs.unlink("output.ts");
-                    fs.unlink("output.mp4");
-                  });
+                  response.end();
                 });
               });
             });
