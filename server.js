@@ -34,7 +34,6 @@ app.post('/download', function (req, response) {
           }
         });
       } else {
-        response.setHeader('Content-Type', 'application/octet-stream');
         response.header('Access-Control-Allow-Origin', '*');
         response.header('Access-Control-Allow-Methods', 'POST');
         response.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -45,6 +44,7 @@ app.post('/download', function (req, response) {
         var duration = $('.video-text h4').next().next().next().text().replace('委員發言時間：','');
         var filename = (committee + title + legislator + duration).replace(' ', '-') + ".ts";
         response.attachment(filename);
+        response.setHeader('Content-Type', 'application/octet-stream');
         $('script').each(function(i, e) {
           var content = $(e).text().trim();
           if(content.match(/readyPlayer/)) {
