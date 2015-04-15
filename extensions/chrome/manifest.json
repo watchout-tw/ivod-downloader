@@ -1,0 +1,22 @@
+{
+  "name": "ivod downloader",
+  "version": "1.0.0",
+  "manifest_version": 2,
+  "content_security_policy": "script-src 'self'; object-src 'self'",
+  "description": "@name@ contains all kind of different useful functions which makes your visit on YouTube much more entertaining.",
+  "content_scripts": [
+    {
+      "matches": [
+        "http://ivod.ly.gov.tw/Play/VOD/*/300K",
+        "http://ivod.ly.gov.tw/Play/VOD/*/1M",
+        "http://ivod.ly.gov.tw/Legislator/*",
+        "http://ivod.ly.gov.tw/Committee/*"
+      ],
+      "run_at": "document_start",
+      "all_frames": true,
+      "js": [ "jquery-2.0.3.min.js", "content-script.js" ]
+    }
+  ],
+  "permissions": [
+  ]
+}
