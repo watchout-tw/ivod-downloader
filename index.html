@@ -15,9 +15,10 @@
     <div id="block-01" class="block">
       <h2>立法院議事轉播影片下載器</h2>
         <div id="download-form">
-        <!-- <label for="textfield">請輸入ivod完整網址</label> -->
-          <input type="text" name="link" id="textfield" class="input-txt" placeholder="請輸入ivod完整網址">
-        <input type="button" name="button" id="button" value="馬上下載" class="donwload-btn"></div>
+          <form method="post" action="/download">
+            <input type="text" name="link" id="textfield" class="input-txt" placeholder="請輸入ivod完整網址">
+            <input type="submit" name="button" id="button" value="馬上下載" class="donwload-btn"></div>
+          </form>
           <p>ivod完整網址範例：http://ivod.ly.gov.tw/Play/VOD/81330/300K</p>
           </div>
           <div id="block-02" class="block">
