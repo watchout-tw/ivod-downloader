@@ -10,7 +10,7 @@ a{
 	color:#ececec;}
 #all-wrap{
 	max-width:1600px;
-	
+
 	margin:0 auto;}
 #header{
 	height:40px;
@@ -59,7 +59,7 @@ a{
 	position:relative;
 	width:546px;
 	margin:190px auto 0 auto;
-	
+
 	overflow:hidden;}
 #download-form label{
 	position:absolute;
@@ -129,3 +129,23 @@ input:-moz-placeholder { color:#c0c0c0; }
 	width:50%;
 	text-align:right;
 	}
+#footer{
+	background:#000;
+	text-align:center;
+	height:50px;
+	overflow:hidden;
+	color:#fff;
+	line-height:50px;}
+#footer-logo{
+	overflow:hidden;
+	width:378px;
+	margin:0 auto;}
+#footer-logo img,#footer-logo span{
+	display:block;
+	float:left;
+	margin:0 10px;
+	font-size:30px;}
+#footer-logo span{
+	color:#ccc;}
+.ff01{
+	padding:8px 0 0 0;}
